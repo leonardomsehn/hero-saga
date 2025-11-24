@@ -1,6 +1,10 @@
+"use client";
+
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaPlay } from "react-icons/fa";
 import { FaPause } from "react-icons/fa";
+import { useState } from "react";
+import Timer from "@/shared/ui/PomodoroTimer";
 import Image from "next/image";
 
 export default function pomodoro() {
@@ -35,9 +39,12 @@ export default function pomodoro() {
       <main className="flex flex-col justify-center items-center gap-2">
         <h1 className="text-3xl">Taverna</h1>
         <h2>Iniciar quest</h2>
-        <div className="flex flex-row gap-4 mt-10 text-orange-500">
+        <div className="flex flex-row gap-4 mt-10 text-orange-500 text-xl">
           <FaPlay />
           <FaPause />
+        </div>
+        <div className="flex justify-center items-center rounded-full w-50 h-50 border-2 text-5xl mt-2">
+          <Timer />
         </div>
       </main>
       <footer>
