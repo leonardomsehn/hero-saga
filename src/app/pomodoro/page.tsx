@@ -1,7 +1,8 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaRegPlayCircle, FaRegPauseCircle } from "react-icons/fa";
+import { VscDebugRestart } from "react-icons/vsc";
 import { useState, useEffect, useCallback } from "react";
 import TimerDisplay from "@/shared/ui/TimerDisplay";
 import Image from "next/image";
@@ -49,6 +50,8 @@ export default function Pomodoro() {
     }
   }, [isRunning]);
 
+  const router = useRouter();
+
   return (
     <div className="flex flex-col justify-between items-center w-full h-screen gap-2 p-10 relative">
       <header className="flex flex-col w-full justify-between items-center gap-2">
@@ -80,7 +83,7 @@ export default function Pomodoro() {
         <h1 className="text-4xl">Taverna</h1>
         <h2>Iniciar quest</h2>
 
-        <div className="flex flex-row gap-4 mt-10 text-orange-700 text-3xl">
+        <div className="flex flex-row mt-10 text-orange-700 text-3xl">
           {isRunning ? (
             <FaRegPauseCircle onClick={handleToggle} />
           ) : (
@@ -98,12 +101,17 @@ export default function Pomodoro() {
             onDecreaseTime={handleDecreaseTime}
           />
         </div>
+
+        <div className="flex text-orange-700 text-3xl">
+          <VscDebugRestart onClick={handleReset} />
+        </div>
       </main>
 
       <footer>
         <button
+          type="button"
           className="bg-orange-700 text-1xl flex justify-center items-center py-2 px-8 rounded-lg font-bold hover:bg-orange-600"
-          type="submit"
+          onClick={() => router.push("/")}
         >
           Sair
         </button>
