@@ -1,13 +1,54 @@
 "use client";
 
 import { RxHamburgerMenu } from "react-icons/rx";
-import { FaPlay } from "react-icons/fa";
-import { FaPause } from "react-icons/fa";
-import { useState } from "react";
-import Timer from "@/shared/ui/PomodoroTimer";
+import { FaRegPlayCircle, FaRegPauseCircle } from "react-icons/fa";
+import { useState, useEffect, useCallback } from "react";
+import TimerDisplay from "@/shared/ui/TimerDisplay";
 import Image from "next/image";
 
-export default function pomodoro() {
+const INITIAL_TIME_SECONDS = 25 * 60;
+
+export default function Pomodoro() {
+  const [secondsLeft, setSecondsLeft] = useState<number>(INITIAL_TIME_SECONDS);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    if (!isRunning || secondsLeft <= 0) {
+      if (secondsLeft <= 0 && isRunning) {
+        console.log("Tempo esgotado!");
+        setIsRunning(false);
+      }
+      return;
+    }
+
+    const intervalId = setInterval(() => {
+      setSecondsLeft((prevSeconds) => prevSeconds - 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [isRunning, secondsLeft]);
+
+  const handleToggle = useCallback(() => {
+    setIsRunning((prev) => !prev);
+  }, []);
+
+  const handleReset = useCallback(() => {
+    setIsRunning(false);
+    setSecondsLeft(INITIAL_TIME_SECONDS);
+  }, []);
+
+  const handleIncreaseTime = useCallback(() => {
+    if (!isRunning) {
+      setSecondsLeft((prev) => prev + 5 * 60);
+    }
+  }, [isRunning]);
+
+  const handleDecreaseTime = useCallback(() => {
+    if (!isRunning) {
+      setSecondsLeft((prev) => Math.max(0, prev - 5 * 60));
+    }
+  }, [isRunning]);
+
   return (
     <div className="flex flex-col justify-between items-center w-full h-screen gap-2 p-10 relative">
       <header className="flex flex-col w-full justify-between items-center gap-2">
@@ -21,8 +62,7 @@ export default function pomodoro() {
               alt="Avatar de Usuário"
               width={30}
               height={30}
-              className={`rounded-full object-cover transition-all duration-300
-          }`}
+              className={`rounded-full object-cover transition-all duration-300`}
             />
             <h2>leofx</h2>
           </div>
@@ -37,16 +77,29 @@ export default function pomodoro() {
       </header>
 
       <main className="flex flex-col justify-center items-center gap-2">
-        <h1 className="text-3xl">Taverna</h1>
+        <h1 className="text-4xl">Taverna</h1>
         <h2>Iniciar quest</h2>
-        <div className="flex flex-row gap-4 mt-10 text-orange-500 text-xl">
-          <FaPlay />
-          <FaPause />
+
+        <div className="flex flex-row gap-4 mt-10 text-orange-700 text-3xl">
+          {isRunning ? (
+            <FaRegPauseCircle onClick={handleToggle} />
+          ) : (
+            <FaRegPlayCircle onClick={handleToggle} />
+          )}
         </div>
-        <div className="flex justify-center items-center rounded-full w-50 h-50 border-2 text-5xl mt-2">
-          <Timer />
+
+        <div className="flex justify-center items-center w-full">
+          <TimerDisplay
+            secondsLeft={secondsLeft}
+            isRunning={isRunning}
+            onToggle={handleToggle}
+            onReset={handleReset}
+            onIncreaseTime={handleIncreaseTime}
+            onDecreaseTime={handleDecreaseTime}
+          />
         </div>
       </main>
+
       <footer>
         <button
           className="bg-orange-700 text-1xl flex justify-center items-center py-2 px-8 rounded-lg font-bold hover:bg-orange-600"
