@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { Nova_Oval } from "next/font/google";
 interface TimerDisplayProps {
   secondsLeft: number;
   isRunning: boolean;
@@ -7,6 +8,12 @@ interface TimerDisplayProps {
   onIncreaseTime: () => void;
   onDecreaseTime: () => void;
 }
+
+const novaOval = Nova_Oval({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
 
 export default function TimerDisplay({
   secondsLeft,
@@ -27,7 +34,9 @@ export default function TimerDisplay({
   }, []);
 
   return (
-    <div className="flex justify-center items-center gap-4">
+    <div
+      className={`flex justify-center items-center gap-4 ${novaOval.className}`}
+    >
       <div
         className="flex justify-center items-center rounded-full w-7 h-7 font-bold bg-orange-700"
         onClick={onDecreaseTime}

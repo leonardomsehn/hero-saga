@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className={`${metamorphous.className} `}>
+    <html>
       <body>{children}</body>
     </html>
   );

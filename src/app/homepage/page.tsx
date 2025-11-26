@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import backgroundHomepage from "@/public/assets/images/backgroundHomepage.png";
-import { Metamorphous } from "next/font/google";
 
 export default function Homepage() {
   return (
